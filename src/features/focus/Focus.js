@@ -2,22 +2,22 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {TextInput} from 'react-native-paper';
-import {RoundedButton} from '../'
+import {RoundedButton} from '../../components'
 import { fontSizes, spacing } from '../../utils/sizes';
 import {colors} from '../../utils/colors'
 
 const Focus = ({addSubject}) => {
-    const [tmpItem, setTmpItem] = useState(null)
+    const [subject, setSubject] = useState(null)
     const submitFxn = () => {
-      console.log(tmpItem)
-      addSubject(tmpItem)
+      console.log(subject)
+      addSubject(subject)
     };
     return (
         <View style={
             styles.container
         }>
             <View style={
-                styles.titleContainer
+                styles.innerContainer
             }>
                 <Text style={
                     styles.title
@@ -34,7 +34,7 @@ const Focus = ({addSubject}) => {
                       }
                       onSubmitEditing = {
                           ({nativeEvent}) => {
-                            setTmpItem(nativeEvent.text)
+                            setSubject(nativeEvent.text)
                           }
                       }
                     />
@@ -49,10 +49,10 @@ const Focus = ({addSubject}) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 0.5
     },
-    titleContainer: {
-        flex: 0.5,
+    innerContainer: {
+        flex: 1,
         padding: spacing.md,
         justifyContent: 'center'
     },

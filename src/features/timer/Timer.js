@@ -1,24 +1,45 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, Vibrate, Platform, Vibration } from "react-native";
 import { colors } from "../../utils/colors";
 import { fontSizes, spacing } from "../../utils/sizes";
 import { Countdown, RoundedButton } from "../../components";
 import { ProgressBar } from "react-native-paper";
-import { Timing } from "./Timing";
+import { Timing } from "..";
+// import { useKeepAwake } from "expo-keep-awake";
 
-export const Timer = ({focusSubject}) => {
+const DEFAULT_TIME = 0.1;
+
+const Timer = ({focusSubject, onTimerEnd, onCancel}) => {
+    // useKeepAwake();
     const [isStarted, setIsStarted] = useState(false)
     const [progress, setProgress] = useState(1)
-    const [minutes, setMinutes] = useState(1)
+    const [minutes, setMinutes] = useState(DEFAULT_TIME)
 
     const onProgress = (progress) => {
         setProgress(progress)
     }
 
+    const vibrate = () => {
+        if(Platform.OS == 'ios') {
+            const interval = setInterval(() => Vibrate.vibrate(), 1000)
+            setTimeout(() => clearInterval(interval), 10000);
+        } else {
+            Vibration.vibrate(10000)
+        }
+    }
+
     const changeTime = (min) => {
-        setMinutes(min)
-        setProgress(1)
-        setIsStarted(false)
+        setMinutes(min);
+        setProgress(1);
+        setIsStarted(false);
+    }
+
+    const onEnd = () => {
+        vibrate();
+        setMinutes(DEFAULT_TIME);
+        setProgress(1);
+        setIsStarted(false);
+        onTimerEnd()
     }
     return (
         <View style={styles.container}>
@@ -27,6 +48,7 @@ export const Timer = ({focusSubject}) => {
                     minutes={minutes}  
                     isPaused={!isStarted} 
                     onProgress={onProgress}
+                    onEnd={onEnd}
                 />
             </View>
             <View style={{paddingTop:spacing.xxl}}>
@@ -50,6 +72,8 @@ export const Timer = ({focusSubject}) => {
                     <RoundedButton title='start' onPress={() => setIsStarted(true)} />
                 )}
             </View>
+            <RoundedButton title='-' size={70} onPress={() => onCancel()} />
+
         </View>
     )
 }
@@ -82,3 +106,5 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     }
 })
+
+export default Timer;

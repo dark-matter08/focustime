@@ -2,8 +2,7 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import { RoundedButton } from "../../components";
 
-
-export const Timing = ({onChangeTime}) => {
+const Timing = ({onChangeTime}) => {
     return(
         <>
             <View style={styles.timingButton}>
@@ -16,7 +15,7 @@ export const Timing = ({onChangeTime}) => {
                 <RoundedButton size={75} title='20' onPress={() => onChangeTime(20)} />
             </View>
         </>
-    )
+    );
 }
 
 
@@ -26,3 +25,5 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     }
 })
+
+export default Timing;
